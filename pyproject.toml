@@ -1,0 +1,42 @@
+[project]
+name = "online-store"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "alembic>=1.16.1",
+    "bcrypt>=4.3.0",
+    "fastapi>=0.115.12",
+    "loguru>=0.7.3",
+    "orjson>=3.10.18",
+    "pydantic-settings>=2.9.1",
+    "pydantic[email]>=2.11.7",
+    "pyjwt[crypto]>=2.10.1",
+    "sqlalchemy[asyncio]>=2.0.41",
+    "uvicorn>=0.34.3",
+]
+
+[dependency-groups]
+dev = [
+    "faker>=37.4.0",
+    "httpx>=0.28.1",
+    "pytest>=8.4.0",
+    "pytest-asyncio>=1.0.0",
+    "pytest-sugar>=1.0.0",
+    "ruff>=0.11.13",
+]
+
+[tool.ruff]
+line-length = 88
+target-version = "py38"
+fix = true
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I"]
+ignore = ["E203"]
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+combine-as-imports = true
+force-single-line = false
