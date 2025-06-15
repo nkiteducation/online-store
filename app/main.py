@@ -3,11 +3,11 @@ from contextlib import asynccontextmanager
 import uvicorn
 
 from core.config import settings
-from fastapi import FastAPI, status, HTTPException
+from core.logger import logger
+from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import ORJSONResponse
-from loguru import logger
 
 
 @asynccontextmanager
