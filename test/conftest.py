@@ -19,14 +19,14 @@ async def client():
         yield client
 
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def env_setup():
     with mock.patch.dict(
         os.environ,
         values={
             "DEVELOPMENT": "true",
             "API_HOST": "0.0.0.0",
-            "API_PORT": "9090",
+            "API_PORT": "0000",
             "API_WORKERS": "4",
         },
         clear=True,
