@@ -1,18 +1,19 @@
 import os
-
 import sys
+
 from unittest import mock
 
 import pytest
 import pytest_asyncio
 
 from httpx import ASGITransport, AsyncClient
+from loguru import logger
 
 from app.main import app
-from loguru import logger
 
 logger.remove()
 logger.add(sys.stderr, level="DEBUG", colorize=True)
+
 
 @pytest_asyncio.fixture
 async def client():
