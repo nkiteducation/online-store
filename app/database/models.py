@@ -23,6 +23,6 @@ class CoreModel(DeclarativeBase, AsyncAttrs):
         ).lstrip("_")
 
 class User(CoreModel, UUIDMixin, TimestampMixin):
-    name: Mapped[str]
-    email: Mapped[str]
+    name: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[bytes]
