@@ -14,7 +14,6 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-os.environ["PYTHONPATH"] = ".:./app"
 from app.database.models import CoreModel
 from app.main import app
 
