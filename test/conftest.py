@@ -8,7 +8,14 @@ import pytest_asyncio
 
 from httpx import ASGITransport, AsyncClient
 from loguru import logger
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
+from app.database.models import CoreModel
 from app.main import app
 
 logger.remove()
@@ -24,7 +31,7 @@ async def client():
 
 
 @pytest.fixture(scope="session", autouse=True)
-def env_setup():
+def setup_env():
     with mock.patch.dict(
         os.environ,
         values={
@@ -44,5 +51,23 @@ def env_setup():
         },
         clear=True,
     ):
-        logger.debug(f"ENV: {os.environ.copy()}")
         yield
+
+
+@pytest.fixture(scope="session")
+def engine() -> AsyncEngine:
+    return create_async_engine("sqlite+aiosqlite:///:memory:", future=True)
+
+
+@pytest.fixture(scope="session")
+def session(engine) -> async_sessionmaker[AsyncSession]:
+    return async_sessionmaker(bind=engine, expire_on_commit=False)
+
+
+@pytest_asyncio.fixture(scope="session", autouse=True)
+async def setup_database(engine: AsyncEngine):
+    async with engine.begin() as conn:
+        await conn.run_sync(CoreModel.metadata.create_all)
+    yield
+    async with engine.begin() as conn:
+        await conn.run_sync(CoreModel.metadata.drop_all)
