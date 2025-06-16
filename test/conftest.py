@@ -10,11 +10,11 @@ from httpx import ASGITransport, AsyncClient
 from loguru import logger
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
-    AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
 
+os.environ["PYTHONPATH"] = ".:./app"
 from app.database.models import CoreModel
 from app.main import app
 
@@ -55,12 +55,12 @@ def setup_env():
 
 
 @pytest.fixture(scope="session")
-def engine() -> AsyncEngine:
+def engine():
     return create_async_engine("sqlite+aiosqlite:///:memory:", future=True)
 
 
 @pytest.fixture(scope="session")
-def session(engine) -> async_sessionmaker[AsyncSession]:
+def session(engine):
     return async_sessionmaker(bind=engine, expire_on_commit=False)
 
 
