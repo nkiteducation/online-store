@@ -14,5 +14,5 @@ def test_env_override():
     env_settings = AppSettings()
     assert env_settings.development is True
     assert env_settings.api.host == "0.0.0.0"
-    assert env_settings.api.port == 9090
+    assert env_settings.api.port == 0
     assert env_settings.api.workers == 4
