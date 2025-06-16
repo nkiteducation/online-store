@@ -1,7 +1,7 @@
+from database.mixin import TimestampMixin, UUIDMixin
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, declared_attr, Mapped, mapped_column
-from database.mixin import UUIDMixin, TimestampMixin
+from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 metadata = MetaData(
     naming_convention={
@@ -21,6 +21,7 @@ class CoreModel(DeclarativeBase, AsyncAttrs):
         return "".join(
             ["_" + c.lower() if c.isupper() else c for c in cls.__name__]
         ).lstrip("_")
+
 
 class User(CoreModel, UUIDMixin, TimestampMixin):
     name: Mapped[str] = mapped_column(unique=True)

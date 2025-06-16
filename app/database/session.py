@@ -1,13 +1,11 @@
 import asyncio
 
-from loguru import logger
+from core.config import settings
 from sqlalchemy.ext.asyncio import (
     async_scoped_session,
     async_sessionmaker,
     create_async_engine,
 )
-
-from core.config import settings
 
 
 class SessionManager:
