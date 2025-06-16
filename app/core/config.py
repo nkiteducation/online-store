@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+from sqlalchemy import URL
 
 class Settings(BaseModel):
     model_config = ConfigDict(frozen=True)
@@ -11,11 +11,36 @@ class APISettings(Settings):
     port: int = 8080
     workers: int = 1
 
+class URLSettings(Settings):
+    drivername: str = "postgresql+asyncpg"
+    username: str = "postgres"
+    password: str = "password"
+    host: str = "localhost"
+    port: int = 5432
+    database: str = "postgres"
+    
+    def get(self) -> URL:
+        return URL.create(
+            drivername=self.drivername,
+            username=self.username,
+            password=self.password,
+            host=self.host,
+            port=self.port,
+            database=self.database,
+        )
+
+class DBSettings(Settings):
+    poolSize: int = 5
+    maxOverflow: int = 10
+    poolTimeout: int = 30
+    
+    url: URLSettings = URLSettings()
 
 class AppSettings(BaseSettings):
     development: bool = False
 
     api: APISettings = APISettings()
+    database: DBSettings = DBSettings()
 
     model_config = SettingsConfigDict(
         extra="ignore",
