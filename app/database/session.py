@@ -22,7 +22,7 @@ class SessionManager:
             self.session_local, scopefunc=asyncio.current_task
         )
     
-    async def session(self):
+    async def get_session(self):
         async with self.session_local() as session:
             yield session
 
