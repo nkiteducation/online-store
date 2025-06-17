@@ -45,12 +45,12 @@ class DBSettings(Settings):
 
 class AuthJWTSettings(BaseSettings):
     private_key_path: Path = next(
-        Path().rglob("private.pem"),
-        FileNotFoundError("private.pem"),
+        Path().rglob("private.key"),
+        None,
     )
     public_key_path: Path = next(
-        Path().rglob("public.pem"),
-        FileNotFoundError("public.pem"),
+        Path().rglob("public.key"),
+        None,
     )
 
     access_token_lifetime: timedelta = timedelta(minutes=15)
