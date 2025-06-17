@@ -6,6 +6,7 @@ from unittest import mock
 import pytest
 import pytest_asyncio
 
+from faker import Faker
 from httpx import ASGITransport, AsyncClient
 from loguru import logger
 from sqlalchemy.ext.asyncio import (
@@ -54,13 +55,19 @@ def setup_env():
 
 
 @pytest.fixture(scope="session")
+def faker():
+    return Faker("ru_RU")
+
+
+@pytest.fixture(scope="session")
 def engine():
     return create_async_engine("sqlite+aiosqlite:///:memory:", future=True)
 
 
-@pytest.fixture(scope="session")
-def session(engine):
-    return async_sessionmaker(bind=engine, expire_on_commit=False)
+@pytest_asyncio.fixture(scope="function")
+async def session(engine):
+    async with async_sessionmaker(bind=engine, expire_on_commit=False)() as session:
+        yield session
 
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
