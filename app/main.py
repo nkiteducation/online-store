@@ -19,6 +19,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
 
+app.get("/health", status_code=status.HTTP_204_NO_CONTENT)(lambda: None)
+
 app.add_middleware(GZipMiddleware)
 app.add_middleware(
     CORSMiddleware,
@@ -27,9 +29,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-app.get("/health", status_code=status.HTTP_204_NO_CONTENT)(lambda: None)
 
 if __name__ == "__main__":
     uvicorn.run(
