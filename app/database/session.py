@@ -1,4 +1,5 @@
 import asyncio
+from functools import wraps
 
 from core.config import settings
 from sqlalchemy.ext.asyncio import (
@@ -24,9 +25,13 @@ class SessionManager:
             scopefunc=asyncio.current_task,
         )
 
-    async def get_session(self):
-        async with self.session_local() as session:
-            yield session
+    def connection(self, method):
+        @wraps(method)
+        async def wrapper(*args, **kwargs):
+            async with self.session_local() as session:
+                return await method(*args, session=session, **kwargs)
+
+        return wrapper
 
     async def dispose(self) -> None:
         await self.engine.dispose()
