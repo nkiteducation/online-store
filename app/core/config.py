@@ -1,3 +1,6 @@
+from datetime import timedelta
+from pathlib import Path
+
 from pydantic import BaseModel, ConfigDict
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import URL
@@ -40,11 +43,26 @@ class DBSettings(Settings):
     url: URLSettings = URLSettings()
 
 
+class AuthJWTSettings(BaseSettings):
+    private_key_path: Path = next(
+        Path().rglob("private.pem"),
+        FileNotFoundError("private.pem"),
+    )
+    public_key_path: Path = next(
+        Path().rglob("public.pem"),
+        FileNotFoundError("public.pem"),
+    )
+
+    access_token_lifetime: timedelta = timedelta(minutes=15)
+    refresh_token_lifetime: timedelta = timedelta(days=30)
+
+
 class AppSettings(BaseSettings):
     development: bool = False
 
     api: APISettings = APISettings()
     database: DBSettings = DBSettings()
+    jwt: AuthJWTSettings = AuthJWTSettings()
 
     model_config = SettingsConfigDict(
         extra="ignore",

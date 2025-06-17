@@ -1,5 +1,4 @@
 import sys
-
 from pathlib import Path
 
 from loguru import logger
@@ -11,8 +10,8 @@ try:
     log_path = Path(LOG_DIRE)
     log_path.mkdir(exist_ok=True)
     (log_path / ".gitignore").write_text("*", encoding="utf-8")
-except Exception as e:
-    print(f"Failed to initialize log directory: {e}", file=sys.stderr)
+except Exception:
+    pass
 
 logger.remove()
 
@@ -34,7 +33,7 @@ logger.add(
     diagnose=False,
     colorize=True,
     level="DEBUG",
-    format="<level>{level: <8}</level> | <cyan>{name}:{function}:{line}</cyan> - <level>{message}</level>",
+    format="<level>{level: <8}</level> | <cyan>{name}:{function}:{line}</cyan> - <level>{message}</level>",  # noqa
 )
 logger.add(
     f"{LOG_DIRE}/{LOG_FILE_FORMAT}",
@@ -42,6 +41,6 @@ logger.add(
     enqueue=True,
     backtrace=False,
     diagnose=False,
-    format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} | {message}",
+    format="""{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} | {message}""",  # noqa
     compression="gz",
 )

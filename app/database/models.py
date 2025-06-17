@@ -1,7 +1,12 @@
 from database.mixin import TimestampMixin, UUIDMixin
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    declared_attr,
+    mapped_column,
+)
 
 metadata = MetaData(
     naming_convention={
@@ -9,7 +14,7 @@ metadata = MetaData(
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
         "ix": "ix_%(table_name)s_%(column_0_name)s",
         "uq": "uq_%(table_name)s_%(column_0_name)s",
-    }
+    },
 )
 
 
@@ -17,9 +22,9 @@ class CoreModel(DeclarativeBase, AsyncAttrs):
     metadata = metadata
 
     @declared_attr
-    def __tablename__(cls) -> str:
+    def __tablename__(self) -> str:
         return "".join(
-            ["_" + c.lower() if c.isupper() else c for c in cls.__name__]
+            ["_" + c.lower() if c.isupper() else c for c in self.__name__],
         ).lstrip("_")
 
 

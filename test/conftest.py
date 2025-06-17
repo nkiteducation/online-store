@@ -1,11 +1,9 @@
 import os
 import sys
-
 from unittest import mock
 
 import pytest
 import pytest_asyncio
-
 from faker import Faker
 from httpx import ASGITransport, AsyncClient
 from loguru import logger
@@ -25,7 +23,8 @@ logger.add(sys.stderr, level="DEBUG", colorize=True)
 @pytest_asyncio.fixture
 async def client():
     async with AsyncClient(
-        transport=ASGITransport(app=app), base_url="http://test"
+        transport=ASGITransport(app=app),
+        base_url="http://test",
     ) as client:
         yield client
 
@@ -66,7 +65,10 @@ def engine():
 
 @pytest_asyncio.fixture(scope="function")
 async def session(engine):
-    async with async_sessionmaker(bind=engine, expire_on_commit=False)() as session:
+    async with async_sessionmaker(
+        bind=engine,
+        expire_on_commit=False,
+    )() as session:
         yield session
 
 
