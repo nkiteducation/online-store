@@ -21,6 +21,10 @@ class SessionManager:
         self.scoped_session = async_scoped_session(
             self.session_local, scopefunc=asyncio.current_task
         )
+    
+    async def session(self):
+        async with self.session_local() as session:
+            yield session
 
     async def dispose(self):
         await self.engine.dispose()
