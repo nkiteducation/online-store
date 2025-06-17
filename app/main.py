@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-
 from core.config import settings
 from core.logger import logger
 from fastapi import FastAPI, status
