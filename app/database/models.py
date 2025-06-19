@@ -1,4 +1,7 @@
+import enum
+
 from database.mixin import TimestampMixin, UUIDMixin
+from sqlalchemy import Enum as SQLEnum
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import (
@@ -28,7 +31,19 @@ class CoreModel(DeclarativeBase, AsyncAttrs):
         ).lstrip("_")
 
 
+class Role(enum.Enum):
+    ADMIN = "admin"
+    USER = "user"
+    GHOST = "ghost"
+
+
 class User(CoreModel, UUIDMixin, TimestampMixin):
     name: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str] = mapped_column(unique=True)
     password: Mapped[bytes]
+
+    is_active: Mapped[bool] = mapped_column(default=True)
+    role: Mapped[Role] = mapped_column(
+        SQLEnum(Role, name="enum_user_role"),
+        default=Role.USER,
+    )

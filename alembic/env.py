@@ -11,7 +11,8 @@ from alembic import context
 
 # Добавляем папку app в PYTHONPATH
 sys.path.insert(
-    0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../app"))
+    0,
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "../app")),
 )
 
 from app.core.config import settings
