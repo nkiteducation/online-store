@@ -1,9 +1,10 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
+from api import router
 from core.config import settings
 from core.logger import logger
-from fastapi import FastAPI, status
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import ORJSONResponse
@@ -18,7 +19,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(default_response_class=ORJSONResponse, lifespan=lifespan)
 
-app.get("/health", status_code=status.HTTP_204_NO_CONTENT)(lambda: None)
+app.include_router(router)
 
 app.add_middleware(GZipMiddleware)
 app.add_middleware(
