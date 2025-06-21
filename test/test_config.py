@@ -1,10 +1,4 @@
-from app.core.config import (
-    APISettings,
-    AppSettings,
-    DBSettings,
-    URLSettings,
-    settings,
-)
+from app.core.config import APISettings, AppSettings, DBSettings, URLSettings, settings
 
 
 def test_default_settings() -> None:

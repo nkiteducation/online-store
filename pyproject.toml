@@ -22,8 +22,10 @@ dependencies = [
 [dependency-groups]
 dev = [
     "aiosqlite>=0.21.0",
+    "black>=25.1.0",
     "faker>=37.4.0",
     "httpx>=0.28.1",
+    "isort>=6.0.1",
     "pytest>=8.4.0",
     "pytest-asyncio>=1.0.0",
     "pytest-sugar>=1.0.0",
@@ -31,9 +33,6 @@ dev = [
 ]
 
 [tool.ruff]
-line-length = 79
-fix = true
-fix-only = true
-
-[tool.ruff.lint]
-select = ["ALL"]
+line-length = 88
+[lint.select]
+select = ["I", "B"]
