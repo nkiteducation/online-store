@@ -1,7 +1,8 @@
+from decimal import Decimal
 import enum
 
 from database.mixin import TimestampMixin, UUIDMixin
-from sqlalchemy import Enum as SQLEnum
+from sqlalchemy import Enum as SQLEnum, Numeric
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
@@ -42,3 +43,8 @@ class User(CoreModel, UUIDMixin, TimestampMixin):
         SQLEnum(Role, name="enum_user_role"),
         default=Role.USER,
     )
+    
+class Product(CoreModel, UUIDMixin, TimestampMixin):
+    name: Mapped[str]
+    description: Mapped[str]
+    price: Mapped[Decimal] = mapped_column(Numeric(10, 2))
