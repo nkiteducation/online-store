@@ -5,7 +5,12 @@ from database.mixin import TimestampMixin, UUIDMixin
 from sqlalchemy import Enum as SQLEnum, Numeric
 from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncAttrs
-from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
+from sqlalchemy.orm import (
+    DeclarativeBase,
+    Mapped,
+    declared_attr,
+    mapped_column,
+)
 
 metadata = MetaData(
     naming_convention={
