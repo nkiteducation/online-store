@@ -33,6 +33,6 @@ dev = [
 ]
 
 [tool.ruff]
-line-length = 88
+line-length = 79
 [lint.select]
 select = ["I", "B"]
