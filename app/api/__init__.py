@@ -1,6 +1,6 @@
-from api.security.dependencies import get_current_user, verify_access_token
+from api.security.dependencies import verify_access_token
 from api.security.endpoint import router as security
-from fastapi import APIRouter, Depends, Security, status
+from fastapi import APIRouter, Depends, status
 
 router = APIRouter(prefix="/v1")
 api = APIRouter(prefix="/api", dependencies=[Depends(verify_access_token)])
