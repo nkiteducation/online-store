@@ -4,10 +4,10 @@ import uvicorn
 from api import router
 from core.config import settings
 from core.logger import logger
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import ORJSONResponse
+from fastapi.responses import JSONResponse, ORJSONResponse
 
 
 @asynccontextmanager
@@ -29,6 +29,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={
+            "detail": [
+                {
+                    "type": "http_error",
+                    "loc": ["request"],
+                    "msg": exc.detail,
+                    "input": str(request.url),
+                }
+            ]
+        },
+    )
+
 
 if __name__ == "__main__":
     uvicorn.run(

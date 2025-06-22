@@ -100,6 +100,7 @@ def verify_refresh_token(
         include_in_schema=False,
     ),
 ) -> dict:
+    print(refresh)
     return _decode_token(
         refresh,
         type="refresh",
