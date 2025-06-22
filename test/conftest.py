@@ -7,7 +7,11 @@ import pytest_asyncio
 from faker import Faker
 from httpx import ASGITransport, AsyncClient
 from loguru import logger
-from sqlalchemy.ext.asyncio import AsyncEngine, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from app.database.models import CoreModel
 from app.main import app
