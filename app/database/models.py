@@ -43,7 +43,8 @@ class User(CoreModel, UUIDMixin, TimestampMixin):
         SQLEnum(Role, name="enum_user_role"),
         default=Role.USER,
     )
-    
+
+
 class Product(CoreModel, UUIDMixin, TimestampMixin):
     name: Mapped[str]
     description: Mapped[str]
