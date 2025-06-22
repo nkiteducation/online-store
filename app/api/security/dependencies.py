@@ -116,21 +116,26 @@ def verify_access_token(
     )
 
 
-async def get_current_user(
+async def validate_scopes(
     security_scopes: SecurityScopes,
     payload: dict = Depends(verify_access_token),
-) -> User:
-    token_scopes = payload.get("scopes", [])
-    for scope in security_scopes.scopes:
-        if scope not in token_scopes:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Not enough rights",
-                headers={
-                    "WWW-Authenticate": f'Bearer scope="{security_scopes.scope_str}"'
-                },
-            )
+) -> dict:
+    scopes = payload.get("scopes", [])
+    missing = [s for s in security_scopes if s not in scopes]
+    if missing:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=f"Missing scopes: {missing}",
+            headers={
+                "WWW-Authenticate": f'Bearer scope="{security_scopes.scope_str}"'
+            },
+        )
+    return payload
 
+
+async def get_current_user(
+    payload: dict = Depends(validate_scopes),
+) -> User:
     if user := await get_user_by_id(payload.get("sub")):
         return user
 
