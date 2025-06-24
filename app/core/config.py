@@ -12,7 +12,7 @@ class Settings(BaseModel):
 
 class APISettings(Settings):
     host: str = "127.0.0.1"
-    port: int = 8080
+    port: int = 8000
     workers: int = 1
 
 
