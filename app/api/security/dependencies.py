@@ -7,6 +7,7 @@ from fastapi.security import (
     OAuth2PasswordBearer,
     OAuth2PasswordRequestForm,
     SecurityScopes,
+    HTTPBearer
 )
 from jwt import InvalidTokenError
 
@@ -40,12 +41,11 @@ ROLE_SCOPES = {
     ],
 }
 
-
+htttp_bearer = HTTPBearer(auto_error=False)
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/v1/security/token",
     scopes=ALL_SCOPES,
 )
-
 
 def _raise_auth_error(
     status_code: int,
@@ -100,7 +100,6 @@ def verify_refresh_token(
         include_in_schema=False,
     ),
 ) -> dict:
-    print(refresh)
     return _decode_token(
         refresh,
         type="refresh",
