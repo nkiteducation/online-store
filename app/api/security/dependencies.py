@@ -7,7 +7,7 @@ from fastapi.security import (
     OAuth2PasswordBearer,
     OAuth2PasswordRequestForm,
     SecurityScopes,
-    HTTPBearer
+    HTTPBearer,
 )
 from jwt import InvalidTokenError
 
@@ -23,7 +23,7 @@ ALL_SCOPES = {
     "orders:manage": "Manage all orders",
     "payments:process": "Process payments",
     "refunds:issue": "Issue refunds",
-    "admin:*": "All administrative actions",
+    "admin:all": "All administrative actions",
 }
 
 ROLE_SCOPES = {
@@ -46,6 +46,7 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/v1/security/token",
     scopes=ALL_SCOPES,
 )
+
 
 def _raise_auth_error(
     status_code: int,
@@ -120,11 +121,11 @@ async def validate_scopes(
     payload: dict = Depends(verify_access_token),
 ) -> dict:
     scopes = payload.get("scopes", [])
-    missing = [s for s in security_scopes if s not in scopes]
+    missing = [s for s in security_scopes.scopes if s not in scopes]
     if missing:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=f"Missing scopes: {missing}",
+            detail=f"Missing scopes: {' '.join(missing)}",
             headers={
                 "WWW-Authenticate": f'Bearer scope="{security_scopes.scope_str}"'
             },

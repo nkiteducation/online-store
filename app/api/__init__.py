@@ -1,13 +1,14 @@
-from api.security.dependencies import verify_access_token
 from api.security.endpoint import router as security
 from api.products.endpoint import router as products
-from fastapi import APIRouter, Depends, status
+from api.admin.endpoint import router as admin
+from api.security.dependencies import htttp_bearer
+from fastapi import Depends
+from fastapi import APIRouter, status
 
-router = APIRouter(prefix="/v1")
-api = APIRouter(prefix="/api", dependencies=[Depends(verify_access_token)])
+router = APIRouter(prefix="/v1", dependencies=[Depends(htttp_bearer)])
 
-api.get("/health", status_code=status.HTTP_204_NO_CONTENT)(lambda: None)
-api.include_router(products)
+router.get("/health", status_code=status.HTTP_204_NO_CONTENT)(lambda: None)
 
 router.include_router(security)
-router.include_router(api)
+router.include_router(products)
+router.include_router(admin)
