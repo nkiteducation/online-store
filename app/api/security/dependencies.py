@@ -4,10 +4,10 @@ from api.security.utils import decode_jwt
 from database.models import User
 from fastapi import Cookie, Depends, HTTPException, status
 from fastapi.security import (
+    HTTPBearer,
     OAuth2PasswordBearer,
     OAuth2PasswordRequestForm,
     SecurityScopes,
-    HTTPBearer,
 )
 from jwt import InvalidTokenError
 
