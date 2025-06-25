@@ -1,9 +1,8 @@
-from api.security.endpoint import router as security
-from api.products.endpoint import router as products
 from api.admin.endpoint import router as admin
+from api.products.endpoint import router as products
 from api.security.dependencies import htttp_bearer
-from fastapi import Depends
-from fastapi import APIRouter, status
+from api.security.endpoint import router as security
+from fastapi import APIRouter, Depends, status
 
 router = APIRouter(prefix="/v1")
 
